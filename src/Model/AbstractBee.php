@@ -4,6 +4,7 @@ namespace App\Model;
 
 abstract class AbstractBee
 {
+    private readonly string $name;
     private readonly int $lossPerHit;
     private int $hitPoints;
 
