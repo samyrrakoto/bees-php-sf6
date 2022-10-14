@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Service\BeeNormalizer;
-use App\Service\BeeService;
 use App\Service\HiveNormalizer;
 use App\Service\HiveService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +18,7 @@ class BeeController extends AbstractController
     #[Route('/', name: 'app_new_game')]
     public function newBeeGame(): Response
     {
-        $hive = $this->hiveService->createHive();
+        $this->hiveService->createHive();
         $this->hiveService->saveHiveState();
 
         return $this->redirectToRoute('app_hit_bee');
