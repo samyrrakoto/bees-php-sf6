@@ -22,8 +22,10 @@ class BeeNormalizer
     {
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, []);
+        $normalizedBee = $serializer->normalize($bee);
+        $normalizedBee['type'] = (new \ReflectionClass($bee))->getShortName();
 
-        return $serializer->normalize($bee);
+        return $normalizedBee;
     }
 
 }

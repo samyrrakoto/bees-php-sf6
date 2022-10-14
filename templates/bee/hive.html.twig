@@ -6,9 +6,19 @@
 
 <div class="w3-container">
     <h2>Hit a Bee !</h2>
-    <ul class="w3-ul w3-card-4" style="width:50%">
+    <ul class="w3-ul w3-card-4" style="width:33%">
     {% for bee in bees %}
-        <li>{{ bee.name }} - {{ bee.hitPoints }}</li>
+        <li
+            {% if bee.type == "Queen" %}
+                class="w3-amber"
+            {% elseif bee.type == "Worker" %}
+                class="w3-khaki"
+            {% elseif bee.type == "Scout" %}
+                class="w3-sand"
+            {% endif %}
+        >
+            {{ bee.name }} - {{ bee.hitPoints }} - {{ bee.type }}
+        </li>
     {% endfor %}
     <li>{% block form %}{% endblock %}</li>
     <li><a href="{{ path('app_bee_new') }}" class="w3-button w3-white w3-border w3-border-red w3-round-large">RESET</a></li>
