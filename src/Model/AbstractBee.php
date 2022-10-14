@@ -10,15 +10,10 @@ abstract class AbstractBee
     private bool $lastHit = false;
     private bool $isDead = false;
 
-    /**
-     * @return bool wether the bee is dead or not
-     */
     public function hit()
     {
         $this->hitPoints = $this->hitPoints - $this->lossPerHit;
         $this->lastHit = true;
-
-        return ;
     }
 
     public function getName()
