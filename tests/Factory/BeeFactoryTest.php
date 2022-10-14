@@ -21,7 +21,7 @@ class BeeFactoryTest extends KernelTestCase
         }
     }
 
-    public function testFailMakeBees()
+    public function testBadBeeType()
     {
         $bees = BeeFactory::makeBees('Foo', 0);
         $this->assertNull($bees);
