@@ -10,48 +10,48 @@ abstract class AbstractBee
     private bool $lastHit = false;
     private bool $isDead = false;
 
-    public function hit()
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getLossPerHit(): int
+    {
+        return $this->lossPerHit;
+    }
+
+    public function getHitPoints(): int
+    {
+        return $this->hitPoints;
+    }
+
+    public function getLastHit(): bool
+    {
+        return $this->lastHit;
+    }
+
+    public function getIsDead(): bool
+    {
+        return $this->isDead;
+    }
+
+    public function hit(): void
     {
         $this->hitPoints = $this->hitPoints - $this->lossPerHit;
         $this->lastHit = true;
     }
 
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getLossPerHit()
-    {
-        return $this->lossPerHit;
-    }
-
-    public function getHitPoints()
-    {
-        return $this->hitPoints;
-    }
-
-    public function getLastHit()
-    {
-        return $this->lastHit;
-    }
-
-    public function getIsDead()
-    {
-        return $this->isDead;
-    }
-
-    public function untagLastHit()
+    public function untagLastHit(): void
     {
         $this->lastHit = false;
     }
 
-    public function setHitPointsToZero()
+    public function setHitPointsToZero(): void
     {
         $this->hitPoints = 0;
     }
 
-    public function tagAsDead()
+    public function tagAsDead(): void
     {
         $this->isDead = true;
     }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Service\BeeNormalizer;
 use App\Service\BeeService;
 use App\Service\HiveNormalizer;
+use App\Service\HiveService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,14 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BeeController extends AbstractController
 {
-    public function __construct(private readonly BeeService $beeService)
+    public function __construct(private readonly HiveService $hiveService)
     {}
 
     #[Route('/', name: 'app_new_game')]
     public function newBeeGame(): Response
     {
-        $hive = $this->beeService->createHive();
-        $this->beeService->saveHiveState($hive);
+        $hive = $this->hiveService->createHive();
+        $this->hiveService->saveHiveState($hive);
 
         return $this->redirectToRoute('app_hit_bee');
     }
@@ -28,7 +29,7 @@ class BeeController extends AbstractController
     #[Route('/hit', name: 'app_hit_bee')]
     public function displayHive(Request $request, HiveNormalizer $hiveNormalizer): Response
     {
-        $bees = $this->beeService->getHiveState();
+        $bees = $this->hiveService->getHiveState();
         if (empty($bees)) {
             return $this->redirectToRoute('app_new_game');
         }
@@ -40,7 +41,7 @@ class BeeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->beeService->hitABee($bees);
+            $this->hiveService->hitABee();
 
             return $this->redirectToRoute('app_hit_bee');
         }
