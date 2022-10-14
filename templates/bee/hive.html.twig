@@ -9,12 +9,14 @@
     <ul class="w3-ul w3-card-4" style="width:33%">
     {% for bee in bees %}
         <li
-            {% if bee.type == "Queen" %}
+            {% if bee.type == "Queen" and bee.isDead == 0 %}
                 class="w3-amber"
-            {% elseif bee.type == "Worker" %}
+            {% elseif bee.type == "Worker" and bee.isDead == 0 %}
                 class="w3-khaki"
-            {% elseif bee.type == "Scout" %}
+            {% elseif bee.type == "Scout" and bee.isDead == 0 %}
                 class="w3-pale-yellow"
+            {% else %}
+                class="w3-gray"
             {% endif %}
         >
            <span {% if bee.lastHit == 1 %} class="w3-text-red" {% endif %}> {{ bee.name }} - {{ bee.hitPoints }}</span>

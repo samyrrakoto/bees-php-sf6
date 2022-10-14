@@ -8,6 +8,7 @@ abstract class AbstractBee
     private readonly int $lossPerHit;
     private int $hitPoints;
     private bool $lastHit = false;
+    private bool $isDead = false;
 
     /**
      * @return bool wether the bee is dead or not
@@ -40,8 +41,23 @@ abstract class AbstractBee
         return $this->lastHit;
     }
 
+    public function getIsDead()
+    {
+        return $this->isDead;
+    }
+
     public function untagLastHit()
     {
         $this->lastHit = false;
+    }
+
+    public function setHitPointsToZero()
+    {
+        $this->hitPoints = 0;
+    }
+
+    public function tagAsDead()
+    {
+        $this->isDead = true;
     }
 }

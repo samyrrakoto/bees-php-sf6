@@ -27,6 +27,8 @@ class BeeService
         $scouts = $beeFactory->makeBees('Scout', self::MAX_SCOUTS);
         $hive = array_merge($queens, $workers, $scouts);
         shuffle($hive);
+        $session = $this->requestStack->getSession();
+        $session->set('deadBeesIndex', []);
 
         return $hive;
     }
@@ -48,30 +50,32 @@ class BeeService
 
     public function hitABee(array $hive): array
     {
-        $total = count($hive);
-        $randomBee = rand(0, $total - 1);
+        $beeRange = range(0, count($hive) - 1);
+        $session = $this->requestStack->getSession();
+        $randomBee = (!empty($session->get('deadBeesIndex')) ? array_rand(array_diff($beeRange, $session->get('deadBeesIndex')),1) : rand(0, count($hive) -1));
         $hive[$randomBee]->hit();
         $hive = $this->untagLastHitOtherBees($hive, $randomBee);
-        $hive = $this->removeDeadBee($hive, $randomBee);
+        $hive = $this->tagBeeAsDead($hive, $randomBee);
 
         return $this->saveHiveState($hive);
     }
 
-    private function removeDeadBee(array $hive, int $index,): array
+    private function tagBeeAsDead(array $hive, int $index): array
     {
-
         if ($hive[$index]->getHitPoints() <= 0)
         {
             if ($hive[$index] instanceof Queen)
             {
-                unset($hive);
-
                 return array();
             }
+            $hive[$index]->setHitPointsToZero();
+            $hive[$index]->tagAsDead();
+            $session = $this->requestStack->getSession();
+            $deadBees = $session->get('deadBeesIndex');
+            $deadBees[] = $index;
+            $session->set('deadBeesIndex', $deadBees);
 
-            unset($hive[$index]);
-
-            return array_values($hive);
+            return $hive;
         } else {
             return $hive;
         }
