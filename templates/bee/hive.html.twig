@@ -20,7 +20,7 @@
             {% endif %}
         >
            <span
-                {% if bee.lastHit == 1 %} class="w3-text-red" {% endif %}> {{ bee.name }} - {{ bee.hitPoints }}
+                {% if bee.lastHit == 1 %} class="w3-text-red" style="font-weight: bold" {% endif %}> {{ bee.name }} - {{ bee.hitPoints }}
                 {% if bee.type == "Queen" %}
                     / 100
                 {% elseif bee.type == "Worker"%}
