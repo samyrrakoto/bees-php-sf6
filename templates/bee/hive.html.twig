@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BeeController!{% endblock %}
+{% block title %}Hit a bee !{% endblock %}
 
 {% block body %}
 <style>
@@ -12,8 +12,8 @@
     <ul>
      {% for bee in bees %}
         <li>{{ bee.name }} - {{ bee.hitPoints }}</li>
-        
      {% endfor %}
     </ul>
+{% block form %}{% endblock %}
 </div>
 {% endblock %}
