@@ -1,4 +1,5 @@
 # Technical test: Bees
++ /!\ Requires PHP 8.1 as it uses some of the latest features, like the PHP Attributes and the read-only properties /!\
 + First `git clone`the repository
 + Then execute a `composer install`
 + Launch the PHP Symfony web server : `symfony serve`
