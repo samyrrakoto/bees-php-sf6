@@ -3,9 +3,6 @@
 namespace App\Tests\Model;
 
 use App\Model\AbstractBee;
-use App\Model\Queen;
-use App\Model\Scout;
-use App\Model\Worker;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class BeeTest extends KernelTestCase
@@ -25,7 +22,7 @@ class BeeTest extends KernelTestCase
     }
 
     /**
-     * @dataProvider provideBeeLifecycleData
+     * @dataProvider provideBeeLifeCycleData
      */
     public function testBeeLifeCycle(string $fqcn, int $remainingHp)
     {
@@ -68,7 +65,7 @@ class BeeTest extends KernelTestCase
         ];
     }
 
-    public function provideBeeLifecycleData()
+    public function provideBeeLifeCycleData()
     {
         return [
             [
