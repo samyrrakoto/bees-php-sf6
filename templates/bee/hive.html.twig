@@ -7,7 +7,7 @@
 <div class="w3-container">
     <h2>Hit a Bee !</h2>
     <ul class="w3-ul w3-card-4" style="width:33%">
-    {% for bee in bees %}
+    {% for bee in hive %}
         <li
             {% if bee.type == "Queen" and bee.isDead == 0 %}
                 class="w3-amber"

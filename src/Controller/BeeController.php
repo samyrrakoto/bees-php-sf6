@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\BeeNormalizer;
 use App\Service\BeeService;
+use App\Service\HiveNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ class BeeController extends AbstractController
     }
 
     #[Route('/hit', name: 'app_hit_bee')]
-    public function displayHive(Request $request, BeeNormalizer $beeNormalizer): Response
+    public function displayHive(Request $request, HiveNormalizer $hiveNormalizer): Response
     {
         $bees = $this->beeService->getHiveState();
         if (empty($bees)) {
@@ -44,10 +45,10 @@ class BeeController extends AbstractController
             return $this->redirectToRoute('app_hit_bee');
         }
 
-        $bees = $beeNormalizer->normalizeHive($bees);
+        $hive = $hiveNormalizer->normalizeHive($bees);
 
         return $this->renderForm('bee/hit.html.twig', [
-                'bees' => $bees,
+                'hive' => $hive,
                 'form' => $form,
         ]);
     }
