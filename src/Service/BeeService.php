@@ -12,19 +12,14 @@ class BeeService
     private CONST MAX_WORKERS = 5;
     private CONST MAX_SCOUTS = 8;
 
-    private $requestStack;
-
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
-    }
+    public function __construct(private readonly RequestStack $requestStack)
+    {}
 
     public function createHive(): array
     {
-        $beeFactory = new BeeFactory();
-        $queens = $beeFactory->makeBees('Queen', self::MAX_QUEENS);
-        $workers = $beeFactory->makeBees('Worker', self::MAX_WORKERS);
-        $scouts = $beeFactory->makeBees('Scout', self::MAX_SCOUTS);
+        $queens = BeeFactory::makeBees('Queen', self::MAX_QUEENS);
+        $workers = BeeFactory::makeBees('Worker', self::MAX_WORKERS);
+        $scouts = BeeFactory::makeBees('Scout', self::MAX_SCOUTS);
         $hive = array_merge($queens, $workers, $scouts);
         shuffle($hive);
         $session = $this->requestStack->getSession();
@@ -33,7 +28,7 @@ class BeeService
         return $hive;
     }
 
-    public function saveHiveState(array $hive)
+    public function saveHiveState(array $hive): array
     {
         $session = $this->requestStack->getSession();
         $session->set('currentHive', $hive);
@@ -50,9 +45,10 @@ class BeeService
 
     public function hitABee(array $hive): array
     {
-        $beeRange = range(0, count($hive) - 1);
         $session = $this->requestStack->getSession();
-        $randomBee = (!empty($session->get('deadBeesIndex')) ? array_rand(array_diff($beeRange, $session->get('deadBeesIndex')),1) : rand(0, count($hive) -1));
+        $deadBeesIndex = $session->get('deadBeesIndex');
+        $beeRange = range(0, count($hive) - 1);
+        $randomBee = array_rand(array_diff($beeRange, $deadBeesIndex));
         $hive[$randomBee]->hit();
         $hive = $this->untagLastHitOtherBees($hive, $randomBee);
         $hive = $this->tagBeeAsDead($hive, $randomBee);
@@ -74,20 +70,19 @@ class BeeService
             $deadBees = $session->get('deadBeesIndex');
             $deadBees[] = $index;
             $session->set('deadBeesIndex', $deadBees);
-
-            return $hive;
-        } else {
-            return $hive;
         }
+
+        return $hive;
     }
 
     private function untagLastHitOtherBees(array $hive, int $exclusion): array
     {
-        foreach ($hive as $key => $bee):
-            if ($key === $exclusion)
+        foreach ($hive as $key => $bee) {
+            if ($key === $exclusion) {
                 continue;
+            }
             $bee->untagLastHit();
-        endforeach;
+        }
 
         return $hive;
     }
