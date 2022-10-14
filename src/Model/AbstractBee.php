@@ -11,8 +11,25 @@ abstract class AbstractBee
     /**
      * @return bool wether the bee is dead or not
      */
-    public function hit(): bool
+    public function hit()
     {
-        return ($this->hitPoints - $this->lossPerHit >= 0);
+        $this->hitPoints = $this->hitPoints - $this->lossPerHit;
+
+        return ;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getLossPerHit()
+    {
+        return $this->lossPerHit;
+    }
+
+    public function getHitPoints()
+    {
+        return $this->hitPoints;
     }
 }

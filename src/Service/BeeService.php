@@ -44,4 +44,13 @@ class BeeService
 
         return $session->get('currentHive');
     }
+
+    public function hitABee(array $hive): array
+    {
+        $total = count($hive);
+        $randomBee = rand(0, $total - 1);
+        $hive[$randomBee]->hit();
+
+        return $this->saveHiveState($hive);
+    }
 }
