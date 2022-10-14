@@ -12,7 +12,7 @@ class HiveService
     private CONST MAX_WORKERS = 5;
     private CONST MAX_SCOUTS = 8;
 
-    private $hive;
+    private array $hive;
 
     public function __construct(private readonly RequestStack $requestStack)
     {}
@@ -54,12 +54,12 @@ class HiveService
         $randomBee = array_rand(array_diff($beeRange, $deadBeesIndex));
         $this->hive[$randomBee]->hit();
         $this->untagLastHitOtherBees($randomBee);
-        $this->hive = $this->tagBeeAsDead($randomBee);
+        $this->tagBeeAsDead($randomBee);
 
         return $this->saveHiveState();
     }
 
-    private function tagBeeAsDead(int $index): array
+    private function tagBeeAsDead(int $index): void
     {
         if ($this->hive[$index]->getHitPoints() <= 0)
         {
@@ -71,11 +71,9 @@ class HiveService
             $session->set('deadBeesIndex', $deadBees);
             if ($this->hive[$index] instanceof Queen)
             {
-                return array();
+                $this->hive = [];
             }
         }
-
-        return $this->hive;
     }
 
     private function untagLastHitOtherBees(int $exclusion): void

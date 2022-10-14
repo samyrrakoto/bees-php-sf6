@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Class\AbstractBee;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 

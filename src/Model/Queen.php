@@ -6,8 +6,6 @@ class Queen extends AbstractBee
 {
     public function __construct(string $name)
     {
-        $this->name = $name;
-        $this->lossPerHit = 15;
-        $this->hitPoints = 100;
+        parent::__construct($name, lossPerHit: 15, hitPoints: 100);
     }
 }

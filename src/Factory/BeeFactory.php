@@ -10,7 +10,7 @@ class BeeFactory
     {
         if (in_array($type, self::POSSIBLE_BEE_TYPES))
         {
-            $bees = array();
+            $bees = [];
             $fullClassName = 'App\Model\\' . $type;
             for ($i = 0; $i < $number; $i++)
             {

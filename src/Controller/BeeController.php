@@ -21,7 +21,7 @@ class BeeController extends AbstractController
     public function newBeeGame(): Response
     {
         $hive = $this->hiveService->createHive();
-        $this->hiveService->saveHiveState($hive);
+        $this->hiveService->saveHiveState();
 
         return $this->redirectToRoute('app_hit_bee');
     }
