@@ -33,6 +33,9 @@ class BeeController extends AbstractController
     public function displayHive(Request $request, BeeNormalizer $beeNormalizer): Response
     {
         $bees = $this->beeService->getHiveState();
+        if (empty($bees))
+            return $this->redirectToRoute('app_bee_new');
+
         $form = $this->createFormBuilder()
             ->add('save', SubmitType::class, ['label' => 'Hit random bee'])
             ->getForm();
@@ -41,6 +44,7 @@ class BeeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->beeService->hitABee($bees);
+
             return $this->redirectToRoute('app_bee_hit');
         }
 

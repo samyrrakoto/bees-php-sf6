@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Factory\BeeFactory;
+use App\Model\Queen;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class BeeService
@@ -50,7 +51,28 @@ class BeeService
         $total = count($hive);
         $randomBee = rand(0, $total - 1);
         $hive[$randomBee]->hit();
+        $hive = $this->removeDeadBee($randomBee, $hive);
 
         return $this->saveHiveState($hive);
+    }
+
+    private function removeDeadBee(int $index, array $hive): array
+    {
+
+        if ($hive[$index]->getHitPoints() <= 0)
+        {
+            if ($hive[$index] instanceof Queen)
+            {
+                unset($hive);
+
+                return array();
+            }
+
+            unset($hive[$index]);
+
+            return array_values($hive);
+        } else {
+            return $hive;
+        }
     }
 }
