@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\HiveNormalizer;
+use App\Service\HiveRepository;
 use App\Service\HiveService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -12,14 +13,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BeeController extends AbstractController
 {
-    public function __construct(private readonly HiveService $hiveService)
+    public function __construct(
+        private readonly HiveService $hiveService,
+        private readonly HiveRepository $hiveRepository
+    )
     {}
 
     #[Route('/', name: 'app_new_game')]
     public function newBeeGame(): Response
     {
-        $this->hiveService->createHive();
-        $this->hiveService->saveHiveState();
+        $hive = $this->hiveService->createHive();
+        $this->hiveRepository->storeNewHive($hive);
 
         return $this->redirectToRoute('app_hit_bee');
     }
@@ -27,8 +31,8 @@ class BeeController extends AbstractController
     #[Route('/hit', name: 'app_hit_bee')]
     public function displayHive(Request $request, HiveNormalizer $hiveNormalizer): Response
     {
-        $bees = $this->hiveService->getHiveState();
-        if (empty($bees)) {
+        $hive = $this->hiveRepository->getHiveState();
+        if (empty($hive[0])) {
             return $this->redirectToRoute('app_new_game');
         }
 
@@ -39,12 +43,13 @@ class BeeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->hiveService->hitABee();
+            $newHiveState = $this->hiveService->hitABee($hive[0], $hive[1]);
+            $this->hiveRepository->saveHiveState($newHiveState[0], $newHiveState[1]);
 
             return $this->redirectToRoute('app_hit_bee');
         }
 
-        $hive = $hiveNormalizer->normalizeHive($bees);
+        $hive = $hiveNormalizer->normalizeHive($hive[0]);
 
         return $this->renderForm('bee/hit.html.twig', [
                 'hive' => $hive,
