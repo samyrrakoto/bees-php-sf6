@@ -19,11 +19,20 @@
                 class="w3-gray"
             {% endif %}
         >
-           <span {% if bee.lastHit == 1 %} class="w3-text-red" {% endif %}> {{ bee.name }} - {{ bee.hitPoints }}</span>
+           <span
+                {% if bee.lastHit == 1 %} class="w3-text-red" {% endif %}> {{ bee.name }} - {{ bee.hitPoints }}
+                {% if bee.type == "Queen" %}
+                    / 100
+                {% elseif bee.type == "Worker"%}
+                    / 50
+                {% elseif bee.type == "Scout"%}
+                    / 30
+                {% endif %}
+            </span>
         </li>
     {% endfor %}
     <li>{% block form %}{% endblock %}</li>
-    <li><a href="{{ path('app_bee_new') }}" class="w3-button w3-white w3-border w3-border-red w3-round-large">RESET</a></li>
+    <li><a href="{{ path('app_new_game') }}" class="w3-button w3-white w3-border w3-border-red w3-round-large">RESET</a></li>
     </ul>
 </div>
 

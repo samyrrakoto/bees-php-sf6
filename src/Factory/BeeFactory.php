@@ -18,7 +18,7 @@ class BeeFactory
             $fullClassName = 'App\Model\\' . $type;
             for ($i = 0; $i < $number; $i++)
             {
-                $bees[] = new $fullClassName($type . ' ' . $i + 1);
+                $bees[] = new $fullClassName($type === 'Queen' ? $type : $type . ' ' . $i + 1);
             }
 
             return $bees;

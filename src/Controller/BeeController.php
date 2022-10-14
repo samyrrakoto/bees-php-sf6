@@ -20,21 +20,21 @@ class BeeController extends AbstractController
         $this->beeService = $beeService;
     }
 
-    #[Route('/bee/new', name: 'app_bee_new')]
+    #[Route('/', name: 'app_new_game')]
     public function newBeeGame(): Response
     {
         $hive = $this->beeService->createHive();
         $bees = $this->beeService->saveHiveState($hive);
 
-        return $this->redirectToRoute('app_bee_hit');
+        return $this->redirectToRoute('app_hit_bee');
     }
 
-    #[Route('/bee/hit', name: 'app_bee_hit')]
+    #[Route('/hit', name: 'app_hit_bee')]
     public function displayHive(Request $request, BeeNormalizer $beeNormalizer): Response
     {
         $bees = $this->beeService->getHiveState();
         if (empty($bees))
-            return $this->redirectToRoute('app_bee_new');
+            return $this->redirectToRoute('app_new_game');
 
         $form = $this->createFormBuilder()
             ->add('save', SubmitType::class, ['label' => 'Hit random bee'])
@@ -45,7 +45,7 @@ class BeeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->beeService->hitABee($bees);
 
-            return $this->redirectToRoute('app_bee_hit');
+            return $this->redirectToRoute('app_hit_bee');
         }
 
         $bees = $beeNormalizer->normalizeHive($bees);
