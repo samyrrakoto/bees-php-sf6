@@ -51,12 +51,13 @@ class BeeService
         $total = count($hive);
         $randomBee = rand(0, $total - 1);
         $hive[$randomBee]->hit();
-        $hive = $this->removeDeadBee($randomBee, $hive);
+        $hive = $this->untagLastHitOtherBees($hive, $randomBee);
+        $hive = $this->removeDeadBee($hive, $randomBee);
 
         return $this->saveHiveState($hive);
     }
 
-    private function removeDeadBee(int $index, array $hive): array
+    private function removeDeadBee(array $hive, int $index,): array
     {
 
         if ($hive[$index]->getHitPoints() <= 0)
@@ -74,5 +75,16 @@ class BeeService
         } else {
             return $hive;
         }
+    }
+
+    private function untagLastHitOtherBees(array $hive, int $exclusion): array
+    {
+        foreach ($hive as $key => $bee):
+            if ($key === $exclusion)
+                continue;
+            $bee->untagLastHit();
+        endforeach;
+
+        return $hive;
     }
 }

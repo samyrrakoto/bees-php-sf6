@@ -7,6 +7,7 @@ abstract class AbstractBee
     private readonly string $name;
     private readonly int $lossPerHit;
     private int $hitPoints;
+    private bool $lastHit = false;
 
     /**
      * @return bool wether the bee is dead or not
@@ -14,6 +15,7 @@ abstract class AbstractBee
     public function hit()
     {
         $this->hitPoints = $this->hitPoints - $this->lossPerHit;
+        $this->lastHit = true;
 
         return ;
     }
@@ -31,5 +33,15 @@ abstract class AbstractBee
     public function getHitPoints()
     {
         return $this->hitPoints;
+    }
+
+    public function getLastHit()
+    {
+        return $this->lastHit;
+    }
+
+    public function untagLastHit()
+    {
+        $this->lastHit = false;
     }
 }

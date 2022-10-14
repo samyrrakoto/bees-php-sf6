@@ -14,10 +14,10 @@
             {% elseif bee.type == "Worker" %}
                 class="w3-khaki"
             {% elseif bee.type == "Scout" %}
-                class="w3-sand"
+                class="w3-pale-yellow"
             {% endif %}
         >
-            {{ bee.name }} - {{ bee.hitPoints }} - {{ bee.type }}
+           <span {% if bee.lastHit == 1 %} class="w3-text-red" {% endif %}> {{ bee.name }} - {{ bee.hitPoints }}</span>
         </li>
     {% endfor %}
     <li>{% block form %}{% endblock %}</li>
